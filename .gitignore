@@ -37,6 +37,8 @@ temp/
 uploads/
 files/
 *.tgz
+docs/
+card.html
 
 # Test files
 test/
@@ -49,3 +51,5 @@ test_*.ts
 .claude/
 .mcp/
 .sequential-thinking/
+
+
