@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通用信息卡片布局模板</title>
+    <style>
+        /* --- 基础与布局 --- */
+        body {
+            /* 使用更现代、更易读的字体栈 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            background-color: #ffffff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            /* 补全上一行 */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- 头部 --- */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #000;
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        /* --- 卡片网格容器 --- */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            /* 卡片之间的间距 */
+        }
+
+        /* --- 通用卡片样式 --- */
+        .card {
+            background-color: #fcfcfc;
+            /* 卡片背景色 */
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 24px;
+
+            /* 这是实现背景文字的关键: 
+              1. 设为 relative，以便内部的 absolute 元素(::before) 相对于它定位
+              2. 设为 overflow: hidden，防止背景文字溢出卡片圆角
+            */
+            position: relative;
+            overflow: hidden;
+
+            /* flex-grow: 1; 让卡片可以伸展
+              flex-basis: 300px; 设置一个基础宽度，小于这个宽度时会换行
+              这能创建灵活的网格
+            */
+            flex-grow: 1;
+            flex-basis: 300px;
+
+            /* 为不同大小的卡片设置最小宽度 */
+            min-width: 300px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            /* 增加一点微妙的阴影 */
+        }
+
+        /* --- 卡片背景装饰 (关键样式) --- */
+        .card::before {
+            /* content 属性用于填充背景文字，通过 data-bg-text 属性从HTML传入 */
+            content: attr(data-bg-text);
+
+            position: absolute;
+            z-index: 1;
+            /* 在内容之下 */
+
+            /* [修改] 定位到右上角 */
+            right: 20px;
+            top: 20px;
+            /* transform: translateY(-50%); [移除] */
+
+            font-size: 5.5rem;
+            /* [修改] 调整字体大小 */
+            font-weight: 800;
+            /* 粗体 */
+            /* color: rgba(0, 0, 0, 0.04); [移除] 颜色将由新类定义 */
+            user-select: none;
+            /* 防止被选中 */
+            white-space: nowrap;
+            /* 防止文字换行 */
+        }
+
+        /* --- 卡片内容 (在背景之上) --- */
+        .card-content {
+            position: relative;
+            z-index: 2;
+            /* 在背景之上 */
+        }
+
+        /* --- 卡片内部元素样式 --- */
+        .card-category {
+            font-size: 0.9rem;
+            font-weight: 600;
+            /* 预设的颜色类 */
+            color: #007bff;
+            /* 默认蓝色 */
+        }
+
+        /* [新增] --- 卡片渐变和背景文字颜色 --- */
+        /* 绿色 */
+        .card.gradient-green {
+            background-image: radial-gradient(circle at 0 0, rgba(40, 167, 69, 0.1), transparent 40%);
+        }
+
+        .card.gradient-green::before {
+            color: rgba(40, 167, 69, 0.08);
+        }
+
+        /* 橙色 */
+        .card.gradient-orange {
+            background-image: radial-gradient(circle at 0 0, rgba(253, 126, 20, 0.1), transparent 40%);
+        }
+
+        .card.gradient-orange::before {
+            color: rgba(253, 126, 20, 0.08);
+        }
+
+        /* 红色 */
+        .card.gradient-red {
+            background-image: radial-gradient(circle at 0 0, rgba(220, 53, 69, 0.05), transparent 40%);
+        }
+
+        .card.gradient-red::before {
+            color: rgba(220, 53, 69, 0.08);
+        }
+
+        /* 紫色 */
+        .card.gradient-purple {
+            background-image: radial-gradient(circle at 0 0, rgba(111, 66, 193, 0.07), transparent 40%);
+        }
+
+        .card.gradient-purple::before {
+            color: rgba(111, 66, 193, 0.08);
+        }
+
+        /* 蓝色 (默认) */
+        .card.gradient-blue {
+            background-image: radial-gradient(circle at 0 0, rgba(0, 123, 255, 0.07), transparent 40%);
+        }
+
+        .card.gradient-blue::before {
+            color: rgba(0, 123, 255, 0.08);
+        }
+
+        /* --- [结束新增] --- */
+
+        /* 不同的颜色 */
+        .color-green {
+            color: #28a745;
+        }
+
+        .color-red {
+            color: #dc3545;
+        }
+
+        .color-purple {
+            color: #6f42c1;
+        }
+
+        .color-orange {
+            color: #fd7e14;
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .card-headline {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000;
+            margin: 12px 0;
+        }
+
+        /* 用于显示大数字/数据 */
+        .card-data-highlight {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 12px 0;
+            /* 渐变色 */
+            background: linear-gradient(45deg, #007bff, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 12px 0 0 0;
+        }
+
+        /* 列表样式 */
+        .card-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 16px 0 0 0;
+        }
+
+        .card-list li {
+            position: relative;
+            padding-left: 22px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* 自定义列表项的 "•" */
+        .card-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2rem;
+            color: #007bff;
+            /* 列表项标记颜色 */
+            line-height: 1.5;
+        }
+
+        /* --- 卡片尺寸变体 (可选) --- */
+
+        /* 2列卡片 (基础宽度设为 45%) */
+        .card.card-large {
+            flex-basis: 45%;
+        }
+
+        /* 3列卡片 (基础宽度设为 30%) */
+        .card.card-small {
+            flex-basis: 30%;
+        }
+
+        /* 1列通栏卡片 */
+        .card.card-full-width {
+            flex-basis: 100%;
+        }
+
+        /* --- 底部 --- */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- 头部 -->
+        <header class="header">
+            <h1>[页面主标题]</h1>
+            <p>[页面副标题或简介]</p>
+        </header>
+
+        <!-- 卡片网格 -->
+        <main class="card-grid">
+
+            <!-- 示例1: 占满一行的卡片 (如 "模型即Agent") -->
+            <div class="card card-full-width gradient-purple" data-bg-text="[背景文字]">
+                <div class="card-content">
+                    <span class="card-category color-purple">[类别]</span>
+                    <h2 class="card-headline">[卡片主标题]</h2>
+                    <p class="card-description">[这是一段描述性文字，用于解释这个模块的核心功能或理念。]</p>
+                </div>
+            </div>
+
+            <!-- 示例2: 3列卡片 (如 "300轮工具调用") -->
+            <div class="card card-small gradient-green" data-bg-text="[300+]">
+                <div class="card-content">
+                    <span class="card-category color-green">[类别]</span>
+                    <h3 class="card-subtitle">[SUBTITLE]</h3>
+                    <h2 class="card-headline">[带描述的卡片]</h2>
+                    <p class="card-description">[详细描述内容，解释这个功能的具体细节和优势。]</p>
+                </div>
+            </div>
+
+            <!-- 示例3: 3列卡片 (如 "SOTA基准") -->
+            <div class="card card-small gradient-orange" data-bg-text="[SOTA]">
+                <div class="card-content">
+                    <span class="card-category color-orange">[基准测试]</span>
+                    <h3 class="card-subtitle">[BENCHMARK]</h3>
+                    <div class="card-data-highlight">99.9%</div>
+                    <p class="card-description">[描述这个数据代表的含义，例如：在某个权威基准测试中达到的最优成绩。]</p>
+                </div>
+            </div>
+
+            <!-- 示例4: 3列卡片 (如 "完全开源") -->
+            <div class="card card-small gradient-red" data-bg-text="[OPEN]">
+                <div class="card-content">
+                    <span class="card-category color-red">[特性]</span>
+                    <h3 class="card-subtitle">[OPEN SOURCE]</h3>
+                    <h2 class="card-headline">[完全开源]</h2>
+                    <p class="card-description">[介绍开源的相关信息，例如许可证、代码仓库地址等。]</p>
+                </div>
+            </div>
+
+            <!-- 示例5: 2列卡片 - 带列表 (如 "模型架构") -->
+            <div class="card card-large gradient-purple" data-bg-text="[SPECS]">
+                <div class="card-content">
+                    <span class="card-category color-purple">[技术规格]</span>
+                    <h3 class="card-subtitle">[TECHNICAL SPECS]</h3>
+                    <h2 class="card-headline">[带列表的卡片]</h2>
+
+                    <ul class="card-list">
+                        <li><b>[特性一]:</b> [特性一的详细描述或数据。]</li>
+                        <li><b>[特性二]:</b> [特性二的详细描述或数据。]</li>
+                        <li><b>[特性三]:</b> [特性三的详细描述或数据。]</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 示例6: 2列卡片 - 纯描述 (如 "上下文能力") -->
+            <div class="card card-large gradient-blue" data-bg-text="[256K]">
+                <!-- [修改] 修正 classs -> class 并添加 gradient-blue -->
+                <div class="card-content">
+                    <span class="card-category color-blue">[核心能力]</span>
+                    <h3 class="card-subtitle">[CONTEXT]</h3>
+                    <h2 class="card-headline">[超长上下文]</h2>
+                    <p class="card-description">[这里是关于上下文能力的详细描述，解释其如何工作、支持的token数量以及带来的优势，例如长文档理解、多轮对话记忆等。]</p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- 底部 -->
+        <footer class="footer">
+
+            <p><img src="https://image.5678.fun/utools/2025-12/1764924353684_1764924353695.png" alt=""
+                    width="100"></img></p>
+            <p>总结小卡片</p>
+        </footer>
+
+    </div>
+
+</body>
+
+
+</html>

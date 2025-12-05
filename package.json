@@ -1,0 +1,42 @@
+{
+  "name": "@xj_bear/summarycard",
+  "version": "1.0.0",
+  "description": "这是一个基于 Model Context Protocol (MCP) 的工具服务，专为大语言模型 (LLM) 设计。它能够将结构化的文本数据转化为精美的可视化总结卡片，并以图片形式返回。",
+  "main": "dist/src/index.js",
+  "bin": {
+    "summarycard": "./dist/src/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && if not exist dist\\src\\templates mkdir dist\\src\\templates && copy /Y src\\templates\\card.html dist\\src\\templates\\card.html",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xj_bear/summarycard.git"
+  },
+  "keywords": [
+    "mcp",
+    "summary",
+    "card",
+    "visualization"
+  ],
+  "author": "xj_bear",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.943.0",
+    "@modelcontextprotocol/sdk": "^1.24.3",
+    "cheerio": "^1.1.2",
+    "dotenv": "^16.4.5",
+    "puppeteer": "^24.32.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

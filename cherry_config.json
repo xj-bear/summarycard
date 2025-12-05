@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+        "summary-card": {
+            "command": "node",
+            "args": [
+                "g:/project/阿里mcp大赛/summarycard/dist/src/index.js"
+            ],
+            "env": {
+                "PUPPETEER_EXECUTABLE_PATH": "C:\\Users\\Administrator\\.cache\\puppeteer\\chrome-headless-shell\\win64-143.0.7499.40\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+                "OUTPUT_DIR": "g:/project/阿里mcp大赛/summarycard/output"
+            }
+        }
+    }
+}

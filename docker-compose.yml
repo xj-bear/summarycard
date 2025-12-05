@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  summary-card-mcp:
+    build: .
+    image: summary-card-mcp:latest
+    container_name: summary-card-mcp
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      # Puppeteer specific envs for Docker
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./output:/app/output
+    # Security options often needed for Chrome in Docker
+    security_opt:
+      - seccomp=unconfined
+    cap_add:
+      - SYS_ADMIN
