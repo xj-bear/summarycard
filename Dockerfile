@@ -1,5 +1,11 @@
 # Use Node.js slim image
-FROM node:18-slim
+FROM node:20-slim
+
+# Set npm mirror
+RUN npm config set registry https://registry.npmmirror.com
+
+# Set Debian mirror
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/debian.sources
 
 # Install dependencies for Puppeteer
 RUN apt-get update && apt-get install -y \
@@ -26,7 +32,7 @@ RUN npm install
 COPY src ./src
 
 # Build the application
-RUN npm run build
+RUN npm run build:docker
 
 # Expose port (if needed for future SSE, though currently stdio)
 # For SSE we might need to change the transport in index.ts or use a wrapper.
@@ -44,4 +50,4 @@ RUN npm run build
 # If we need SSE, we should use the SSEServerTransport from the SDK.
 
 # Let's update the CMD to run the build
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/src/index.js"]

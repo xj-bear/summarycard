@@ -37,7 +37,7 @@ temp/
 uploads/
 files/
 *.tgz
-docs/
+
 card.html
 
 # Test files

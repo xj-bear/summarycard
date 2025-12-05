@@ -20,7 +20,7 @@
 无需安装，直接使用 `npx` 启动服务 (需确保本地已安装 Node.js 和 Chrome/Chromium):
 
 ```bash
-npx @xj_bear/summarycard
+npx @imbear/summarycard
 ```
 
 ### 2. 配置说明
@@ -35,6 +35,8 @@ npx @xj_bear/summarycard
 | `S3_BUCKET_NAME` | S3 存储桶名称 | 否 | - |
 | `S3_ENDPOINT` | 自定义 S3 端点 (如 MinIO/OSS) | 否 | - |
 | `OUTPUT_DIR` | 本地图片保存路径 | 否 | (临时目录) |
+| `TRANSPORT_MODE` | 传输模式 (`stdio` 或 `sse`) | 否 | `stdio` |
+| `PORT` | SSE 服务端口 (仅 `sse` 模式有效) | 否 | 3000 |
 
 ### 3. 在 MCP 客户端中使用
 
@@ -45,7 +47,7 @@ npx @xj_bear/summarycard
   "mcpServers": {
     "summary-card": {
       "command": "npx",
-      "args": ["-y", "@xj_bear/summarycard"],
+      "args": ["-y", "@imbear/summarycard"],
       "env": {
         "S3_BUCKET_NAME": "my-cards",
         "AWS_ACCESS_KEY_ID": "..."
@@ -64,7 +66,7 @@ npx @xj_bear/summarycard
   "mcpServers": {
     "summary-card": {
       "command": "node",
-      "args": ["g:/project/阿里mcp大赛/summarycard/dist/src/index.js"],
+      "args": ["your-summarycard-path/dist/src/index.js"],
       "env": {
         "PUPPETEER_EXECUTABLE_PATH": "C:\\Users\\Administrator\\.cache\\puppeteer\\chrome-headless-shell\\win64-143.0.7499.40\\chrome-headless-shell-win64\\chrome-headless-shell.exe"
       }
@@ -82,12 +84,16 @@ npx @xj_bear/summarycard
 ```json
 {
   "title": "卡片标题",
-2. 在项目根目录创建 `.env` 文件并填入 AWS 凭证 (参考 `.env.example` 或直接在 `docker-compose.yml` 中配置)。
-3. 运行：
+### 4. Docker 部署 (推荐用于 SSE)
+   
+1. 在项目根目录创建 `.env` 文件并填入 AWS 凭证 (参考 `.env.example` 或直接在 `docker-compose.yml` 中配置)。
+2. 运行：
 
 ```bash
 docker-compose up -d --build
 ```
+
+此时服务将在 `http://localhost:3000/sse` 提供 SSE 接口。
 
 ### 手动构建
 
@@ -97,6 +103,7 @@ docker build -t xjbear/summarycard .
 
 # 运行容器 (SSE 模式)
 docker run -d -p 3000:3000 \
+  -e TRANSPORT_MODE=sse \
   -e S3_BUCKET_NAME=my-bucket \
   xjbear/summarycard
 ```
