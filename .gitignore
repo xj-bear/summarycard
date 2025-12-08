@@ -52,4 +52,7 @@ test_*.ts
 .mcp/
 .sequential-thinking/
 
+# docs
+docs/
+
 
