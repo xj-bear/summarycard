@@ -1,5 +1,7 @@
 # 总结卡片生成器 MCP (Summary Card MCP)
 
+[![npm version](https://img.shields.io/npm/v/@imbear/summarycard.svg)](https://www.npmjs.com/package/@imbear/summarycard)
+
 这是一个基于 Model Context Protocol (MCP) 的工具服务，专为大语言模型 (LLM) 设计。它能够将结构化的文本数据转化为精美的可视化总结卡片，并以图片形式返回。
 
 ## ✨ 核心功能

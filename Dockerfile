@@ -11,8 +11,32 @@ RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/debi
 RUN apt-get update && apt-get install -y \
     chromium \
     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+    fonts-noto-cjk \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
+
+# Configure font alias for Microsoft YaHei -> Noto Sans CJK SC
+RUN mkdir -p /etc/fonts/conf.d && \
+    echo '<?xml version="1.0"?>\n\
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">\n\
+<fontconfig>\n\
+  <match target="pattern">\n\
+    <test name="family">\n\
+      <string>Microsoft YaHei</string>\n\
+    </test>\n\
+    <edit name="family" mode="assign" binding="strong">\n\
+      <string>Noto Sans CJK SC</string>\n\
+    </edit>\n\
+  </match>\n\
+  <match target="pattern">\n\
+    <test name="family">\n\
+      <string>微软雅黑</string>\n\
+    </test>\n\
+    <edit name="family" mode="assign" binding="strong">\n\
+      <string>Noto Sans CJK SC</string>\n\
+    </edit>\n\
+  </match>\n\
+</fontconfig>' > /etc/fonts/conf.d/99-ms-yahei-alias.conf
 
 # Set environment variables
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true

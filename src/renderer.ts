@@ -51,8 +51,8 @@ export class CardRenderer {
             await page.setContent(html, { waitUntil: 'networkidle0' });
 
             // Set viewport to fixed mobile width
-            const width = 500;
-            await page.setViewport({ width, height: 800, deviceScaleFactor: 2 });
+            const width = 640; // [修改] 调整为 640px
+            await page.setViewport({ width, height: 800, deviceScaleFactor: 1 });
 
             // Get the height of the container
             const bodyHeight = await page.evaluate(() => {
@@ -60,10 +60,9 @@ export class CardRenderer {
                 return container ? container.scrollHeight + 40 : document.body.scrollHeight;
             });
 
-            await page.setViewport({ width, height: bodyHeight, deviceScaleFactor: 2 });
+            await page.setViewport({ width, height: bodyHeight, deviceScaleFactor: 1 });
 
             const buffer = await page.screenshot({
-                fullPage: true,
                 type: 'png',
                 encoding: 'binary',
             });
@@ -86,7 +85,7 @@ export class CardRenderer {
         $('body').addClass('mobile-layout');
 
         // Set Style
-        $('body').attr('data-style', data.style || 'default');
+        $('body').attr('data-style', 'default');
 
         // Clear existing cards
         const grid = $('.card-grid');
@@ -109,17 +108,8 @@ export class CardRenderer {
         let sizeClass = 'card-small'; // Default 3 columns
         if (type === 'full') sizeClass = 'card-full-width';
         if (type === 'list' || type === 'default') sizeClass = 'card-large'; // 2 columns for list or default text
-        // Adjust logic:
-        // If user explicitly asks for 'default' but it's just text, maybe small or large?
-        // Let's stick to simple mapping:
-        // full -> card-full-width
-        // list -> card-large
-        // data -> card-small
-        // default -> card-small (unless description is long?) -> let's default to card-small for 'default' to fit more.
 
         if (type === 'default') sizeClass = 'card-small';
-
-        // Override size if needed based on content? No, let LLM decide type.
 
         let contentHtml = '';
 

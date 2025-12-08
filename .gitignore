@@ -38,7 +38,7 @@ uploads/
 files/
 *.tgz
 
-card.html
+
 
 # Test files
 test/

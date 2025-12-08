@@ -29,6 +29,13 @@ const GenerateCardSchema = z.object({
   style: z.enum(['default', 'minimal', 'dark', 'editorial']).optional().default('default').describe("Visual style theme"),
 });
 
+function cleanJsonString(str: string): string {
+  // Remove markdown code blocks (```json ... ``` or ``` ... ```)
+  let cleaned = str.replace(/```(?:json)?\s*([\s\S]*?)\s*```/g, '$1');
+  // Trim whitespace
+  return cleaned.trim();
+}
+
 async function main() {
   const server = new Server(
     {
@@ -103,7 +110,8 @@ async function main() {
         // Handle stringified JSON arguments
         if (typeof args === 'string') {
           try {
-            args = JSON.parse(args);
+            const cleanedArgs = cleanJsonString(args);
+            args = JSON.parse(cleanedArgs);
           } catch (e) {
             throw new Error(`Invalid JSON in arguments: ${(e as Error).message}`);
           }
@@ -231,7 +239,8 @@ async function main() {
             let args = request.params.arguments;
             if (typeof args === 'string') {
               try {
-                args = JSON.parse(args);
+                const cleanedArgs = cleanJsonString(args);
+                args = JSON.parse(cleanedArgs);
               } catch (e) {
                 throw new Error(`Invalid JSON in arguments: ${(e as Error).message}`);
               }
